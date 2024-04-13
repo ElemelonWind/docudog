@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import google.generativeai as genai
 from dotenv import load_dotenv 
 import os
+import requests
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,8 +26,9 @@ class GetLinks(Resource):
         url = args['url']
 
         def getLinks(url):
-            page=urllib3.urlopen(url)
-            soup = BeautifulSoup(page.read(), features="lxml")
+            session = requests.Session()
+            response = session.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+            soup = BeautifulSoup(response.text, 'html.parser')
             links = soup.find_all('a')
             newlinks = []
             for link in links:
@@ -41,9 +43,11 @@ class GetLinks(Resource):
                     newlinks.append(link)
             return newlinks
 
-        links = getLinks(url)
-        print(links)
-        return {'status': 'success', 'message': 'Links fetched successfully', 'data': links}, 200
+        try:
+            links = getLinks(url)
+            return {'status': 'success', 'message': 'Links fetched successfully', 'data': links}, 200
+        except:
+            return {'status': 'error', 'message': 'Error fetching links'}, 400
     
 class SendMessage(Resource):
     def get(self):
