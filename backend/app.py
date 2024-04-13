@@ -32,7 +32,6 @@ class GetLinks(Resource):
             links = soup.find_all('a')
             newlinks = []
             for link in links:
-                print(link)
                 try:
                     if link['href'].startswith('/'):
                         link['href'] = url + link['href']
