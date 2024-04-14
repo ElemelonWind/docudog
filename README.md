@@ -14,7 +14,7 @@ Our querying process works by integrating keyword extraction to fork the process
 
 ## Challenges we ran into
 
-The YouTube API did not work, so we ran into issues with our plans for video and audio implementations. Our goal was to let the user input a video link, similar to how we let the user input a website link, and summarize and analyze out of that. However, we were not able to find a suitable API to help us do a YouTube file converter.
+Due to quota limits and slower request times using Gemini 1.5, the chat bot (when hosted on production on Vercel) does not always return a response in the amount of time that we want. However, we were able to get a local demo working reliably.
 
 ## What we learned
 
